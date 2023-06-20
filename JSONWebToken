@@ -1,0 +1,44 @@
+import jwt from 'jsonwebtoken';
+
+// Define una interfaz para el usuario
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+}
+
+// Datos de ejemplo de usuario
+const user: User = {
+  id: 1,
+  username: 'ejemplo',
+  email: 'ejemplo@ejemplo.com',
+  password: 'secreto',
+};
+
+// Define una clave secreta para firmar y verificar el token
+const secretKey = 'clave_secreta';
+
+// Función para generar un token JWT
+function generateToken(user: User): string {
+  const token = jwt.sign({ id: user.id, username: user.username }, secretKey);
+  return token;
+}
+
+// Función para verificar un token JWT
+function verifyToken(token: string): boolean {
+  try {
+	jwt.verify(token, secretKey);
+	return true;
+  } catch (error) {
+	return false;
+  }
+}
+
+// Genera un token para el usuario de ejemplo
+const token = generateToken(user);
+console.log('Token generado:', token);
+
+// Verifica el token generado
+const isValidToken = verifyToken(token);
+console.log('Token válido:', isValidToken);
